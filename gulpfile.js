@@ -7,8 +7,8 @@ var gulp = require('gulp'),
 	imagemin = require('gulp-imagemin'),
 	htmlmin = require('gulp-htmlmin'),
 	clean = require('gulp-clean'),
-	sequence = require('gulp-sequence') //gulp命令异步执行
-    webpack = require('webpack'),
+	sequence = require('gulp-sequence'),//gulp命令异步执行
+    webpack = require('webpack'), //require('webpack-stream')
     webpackConfig = require('./webpack.config.js'),
     fileinclude = require('gulp-file-include')
 
@@ -41,7 +41,7 @@ gulp.task('sass', function () {
 gulp.task('script',function(){
 	gulp.src('src/**/*.js')
         .pipe(babel({
-            "presets": ["es2015", "stage-2"]  //stage-2解决对象展开表达式编译失败
+            presets: ["es2015", "stage-2"]  //stage-2解决对象展开表达式编译失败
         }))
         // .pipe(jsmin())
         .pipe(gulp.dest('./dist'))
@@ -79,6 +79,12 @@ var myDevConfig = Object.create(webpackConfig);
 var devCompiler = webpack(myDevConfig);
 
 //引用webpack对js进行操作
+//使用webpack-stream代替webpack实现实时执行
+// gulp.task('webpack', function() {
+//   return gulp.src('src/001-lesson/index.js')
+//     .pipe(webpack(myDevConfig))
+//     .pipe(gulp.dest('dist/'));
+// });
 
 gulp.task('webpack',function(){
    devCompiler.run(function(err, stats) {});

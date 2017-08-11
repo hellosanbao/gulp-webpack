@@ -1,6 +1,7 @@
 var webpack           = require('webpack');
 var path              = require('path');
 var glob              = require('glob');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 function getEntry() {
     var entry = {};
@@ -35,5 +36,16 @@ module.exports={
         publicPath: "dist/js/",
         filename: "[name].js",
         chunkFilename: "[chunkhash].js"
+    },
+     module: {
+        rules: [
+          {
+            test: /\.js$/,
+            loader: 'babel-loader',
+            query: {
+                'presets':["es2015", "stage-2"]
+            }
+          }
+        ]
     }
 }
